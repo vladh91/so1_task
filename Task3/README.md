@@ -2,8 +2,11 @@
 To be able to run ./start.sh its supposed that kubectl and minikube is already installed.
 This has been implemented in Ubuntu 18.04 using kubectl and minikube installed locally.
 
-start.sh script pulls java-example-app, build and package using mvn, creates docker image and creates java-app with mysql kubernetes deployment.
-To start it just run ./start.sh
+start.sh script pulls java-example-app, builds and packages it  using mvn, creates docker image and creates java-app with mysql kubernetes deployment.
+To start it just run 
+```
+./start.sh
+```
 
 
 ## Answers/descriptions for 5-8 points:
@@ -37,14 +40,14 @@ To start it just run ./start.sh
  
  For this case we can use namespaces in Kubernetes.
  Example:
- > prod.yaml
+ > prd.yaml
  ```aidl
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: prod
+  name: prd
 ```
-> kubectl create -f ./prod.yaml
+> kubectl create -f ./prd.yaml
 
 The same can be done for dev/qa environments. And deployment of application can be done using this 3 different namespaces.
 

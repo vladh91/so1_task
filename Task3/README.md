@@ -29,6 +29,7 @@ To start it just run ./start.sh
  This part of yaml can be added to > kubeconfig/mysql-deployment.yaml which will create pvc with 20G storage and after recreation of pod data will be persistent
  
  -  Add CI to the deployment process.
+ 
  For this point I have created .gitlab-ci.yml assuming that repository with src files of java are located in Gitlab and its our CI/CD tool.
  You can find the file inside Task3 folder.
  
@@ -49,6 +50,7 @@ The same can be done for dev/qa environments. And deployment of application can 
 
 - Please suggest a monitoring solution for your system. How would you notify an admin
   that the resources are scarce?
+ 
   For me the best monitoring service for dockerized environments/kubernetes is Prometheus.
   Prometheus can natively monitor kubernetes, nodes and prometheus itself.
   It has very powerful api for custom metrics, also its provides robust query language and also built in dashboard.

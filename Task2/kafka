@@ -1,0 +1,6 @@
+define service {
+        use                             generic-service
+        host_name                       kafka-host
+        service_description             Custom Kafka checker In Python
+        check_command                   check_topic_exists
+        }

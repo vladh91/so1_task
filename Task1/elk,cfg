@@ -1,0 +1,6 @@
+define service {
+        use                             generic-service
+        host_name                       elk-host
+        service_description             Custom ELK checker In Python
+        check_command                   check_elk_occurance
+        }

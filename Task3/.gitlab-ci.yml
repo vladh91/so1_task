@@ -1,0 +1,38 @@
+stages:
+  - app_build
+  - kubernetes_build
+
+variables:
+  DOCKER_REGISTRY: "some-dummy-registry"
+  DOCKER_IMAGE: "java-example-app"
+  KUBE_SERVER: "dummy-kube-server"
+
+java_app_build:
+  stage: app_build
+  image: maven:3.3.9
+  script: |
+   - mvn -B clean
+   - mvn -B compile
+   - mvn -B package
+
+docker_image_build:
+  stage: app_build
+  script:
+    - docker build -t $DOCKER_REGISTRY/$DOCKER_IMAGE:$CI_JOB_ID . # Building docker image with this syntax some-dummy-registry/java-example-app:job_id where job id is gitlab runner job id to have each time unique docker image
+    - docker push $DOCKER_REGISTRY/$DOCKER_IMAGE:$CI_JOB_ID
+  tags:
+    - shell      #This stage needs to be runned in shell based Gitlab runner to be able to execute docker
+
+kubernetes_cluster:
+  stage: kubernetes_build
+  image: bitnami/kubectl
+  script: |
+    - 'echo "Creating mysql pod:"'
+    - 'curl -X POST --data-binary @mysql-deployment.yaml -H "Content-type: application/yaml" https://$KUBE_SERVER/apis/extensions/v1beta1/namespaces/default/deployments'
+    - 'echo "Creating app pod: "'
+    - 'curl -X POST --data-binary @redrock.app-service.yaml -H "Content-type: application/yaml" http://$KUBE_SERVER/api/v1/namespaces/default/services''
+  only:
+    - master # Setting this only to be executed in master branch so that master branch will be production code provider. All the other branches needs to be merged
+
+#In this stage I am using default namespace and curl to send yml files to api of Kubernetes cluster.
+#In production related environments it can be different namespaces with different purposes.
